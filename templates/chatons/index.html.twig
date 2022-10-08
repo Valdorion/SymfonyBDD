@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout de chaton{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Chatons de la catégorie {{ categorie.titre }}</h1>
+        <div class="row">
+            {% for a in chatons %}
+                <div class="col col-3">
+                    <div class="card"><img src="{{ a.photo }}" alt=""
+                                           class="card-img-top">
+                        <div class="card-body">
+                            <h2 class="card-title">{{ a.nom }}</h2>
+                            {% if a.sterilise == 1 %}
+                                <p class="card-text">Stérilisé</p>
+                            {% else %}
+                                <p class="card-text">Non-stérilisé</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
