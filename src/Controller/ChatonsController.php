@@ -21,7 +21,7 @@ class ChatonsController extends AbstractController
     {
 
         //creation du formulaire d'ajout
-        $chaton=new Chaton();//on crée une categorie vide
+        $chaton=new Chaton();//on crée un chaton vide
         //on crée un formulaire à partir de la class CategorieType et de notre objet vide
         $form=$this->createForm(ChatonType::class,$chaton);
 
@@ -74,6 +74,58 @@ class ChatonsController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/chatons/modifier/{id}", name="chaton_edit")
+     */
+    public function ModifierChatons($id, ManagerRegistry $doctrine, Request $request, Categorie $category){
+        //récupère le chaton dans la base de donnée
+        $chaton=$doctrine->getRepository(Chaton::class)->find($id);
+        $idCategorie=999;
 
+        //si on n'a rien trouvé -> 404
+        if(!$chaton){
+            throw $this->createNotFoundException("Aucun chaton avec l'id $id");
+        }
+
+        //si on arrive là, c'est qu'on a trouvé un chaton
+        //on crée le formulaire avec (il sera rempli avec ses valeurs)
+        $form=$this->createForm(ChatonType::class,$chaton);
+
+        //gestion du retour du formulaire
+        //on ajoute Request dans les parametres comme dans le projet precedent
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            //le handleRequest a rempli notre objet $categorie
+            //qui n'est plus vide
+            //pour sauvegarder,on va récupérer un entityManager de doctrine
+            //qui comme son nom l'indique gère les entités
+            $em=$doctrine->getManager();
+            //on lui dit de ranger dans la BDD
+            $em->persist($chaton);
+
+            //générer l'insert
+            $em->flush();
+
+            //récupération de la nouvelle catégorie du chaton
+            $idCategorie = $form->get('Categorie')->getData();
+
+//            //retour à l'accueil
+              return $this->redirectToRoute("chatons_view", ["idCategorie" => $idCategorie]);
+
+        }
+
+        return $this->render("chatons/modifier.html.twig",[
+            'chaton' => $chaton,
+            'formulaire'=>$form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/chatons/supprimer/{id}", name="chaton_delete")
+     */
+    public function SupprimerChatons($id, ManagerRegistry $doctrine, Request $request){
+
+    }
 
 }

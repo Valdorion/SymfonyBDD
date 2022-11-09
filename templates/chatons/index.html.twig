@@ -8,8 +8,8 @@
         <div class="row">
             {% for a in chatons %}
                 <div class="col col-3">
-                    <div class="card"><img src="{{ a.photo }}" alt=""
-                                           class="card-img-top">
+                    <div class="card">
+                        <img src="{{ a.photo }}" alt="" class="card-img-top">
                         <div class="card-body">
                             <h2 class="card-title">{{ a.nom }}</h2>
                             {% if a.sterilise == 1 %}
@@ -17,6 +17,8 @@
                             {% else %}
                                 <p class="card-text">Non-stérilisé</p>
                             {% endif %}
+                            <a href="{{ path("chaton_edit",{"id": a.id})}}" class="btn btn-primary">Modifier</a>
+                            <a href="{{ path("chaton_delete",{"id": a.id})}}" class="btn btn-danger">Supprimer</a>
                         </div>
                     </div>
                 </div>

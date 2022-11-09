@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des chatons BDD{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Modifier le Chaton <i>{{ chaton.nom }}</i></h1>
+        {{ form(formulaire) }}
+    </div>
+{% endblock %}
