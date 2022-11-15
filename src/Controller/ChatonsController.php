@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Categorie;
 use App\Entity\Chaton;
-use App\Form\CategorieType;
+use App\Form\ChatonSupprimerType;
 use App\Form\ChatonType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -77,10 +77,9 @@ class ChatonsController extends AbstractController
     /**
      * @Route("/chatons/modifier/{id}", name="chaton_edit")
      */
-    public function ModifierChatons($id, ManagerRegistry $doctrine, Request $request, Categorie $category){
+    public function ModifierChatons($id, ManagerRegistry $doctrine, Request $request){
         //récupère le chaton dans la base de donnée
         $chaton=$doctrine->getRepository(Chaton::class)->find($id);
-        $idCategorie=999;
 
         //si on n'a rien trouvé -> 404
         if(!$chaton){
@@ -126,6 +125,41 @@ class ChatonsController extends AbstractController
      */
     public function SupprimerChatons($id, ManagerRegistry $doctrine, Request $request){
 
+        //récupérer le chaton dans la BDD
+        $chaton=$doctrine->getRepository(Chaton::class)->find($id);
+
+        //si on n'a rien trouvé -> 404
+        if(!$chaton){
+            throw $this->createNotFoundException("Aucun chaton avec l'id $id");
+        }
+
+        //si on arrive là, c'est qu'on a trouvé une catégorie
+        //on crée le formulaire avec (il sera rempli avec ses valeurs)
+        $form=$this->createForm(ChatonSupprimerType::class,$chaton);
+
+        //gestion du retour du formulaire
+        //on ajoute Request dans les parametres comme dans le projet precedent
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            //le handleRequest a rempli notre objet $categorie
+            //qui n'est plus vide
+            //pour sauvegarder,on va récupérer un entityManager de doctrine
+            //qui comme son nom l'indique gère les entités
+            $em=$doctrine->getManager();
+            //on lui dit de la supprimer dans la BDD
+            $em->remove($chaton);
+
+            //générer l'insert
+            $em->flush();
+
+            //retour à l'accueil
+            return $this->redirectToRoute("app_home");
+        }
+        return $this->render("chatons/supprimer.html.twig",[
+            'chaton' => $chaton,
+            'formulaire'=>$form->createView()
+        ]);
     }
 
 }

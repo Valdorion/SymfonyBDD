@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/SymfonyBDD_Groupe1.iml" filepath="$PROJECT_DIR$/.idea/SymfonyBDD_Groupe1.iml" />
+      <module fileurl="file://D:/boulot/laragon/www/.idea/www.iml" filepath="D:/boulot/laragon/www/.idea/www.iml" />
     </modules>
   </component>
 </project>
