@@ -1,3 +1,3 @@
 # SymfonyBDD
 
-Le projet en cours
+Le projet est fermé pour cause de trop de problème
