@@ -40,6 +40,8 @@ class ChatonsController extends AbstractController
 
             //générer l'insert
             $em->flush();
+
+            return $this->redirectToRoute("app_home");
         }
 
         //pour aller cherher les categories dans la table categories, je vais utiliser un repository
