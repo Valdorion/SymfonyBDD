@@ -1,6 +1,6 @@
-/symfony.exe
-/.env
-/.env.test
+symfony.exe
+.env
+.env.test
 
 ###> symfony/framework-bundle ###
 /.env.local
